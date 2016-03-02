@@ -60,4 +60,3 @@ e.g.
 
     $eventPublisher->publish($event);
 
-    

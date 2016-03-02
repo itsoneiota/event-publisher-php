@@ -17,7 +17,7 @@ class EventPublisher {
     /**
      * @param Transporter $transporter
      */
-    public function setTransporter($transporter) {
+    public function setTransporter(Transporter $transporter) {
         $this->transporter = $transporter;
     }
 
