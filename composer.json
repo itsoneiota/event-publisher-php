@@ -1,5 +1,5 @@
 {
-  "name": "itsoneiota/event-publisher",
+  "name": "itsoneiota/event-publisher-php",
   "description": "PHP library to publish events",
   "type":"library",
   "license": "proprietary",
