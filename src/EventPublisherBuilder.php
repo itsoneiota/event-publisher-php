@@ -17,8 +17,7 @@ class EventPublisherBuilder {
     }
 
     /**
-     * @param \Memcached $memcached
-     * @param $config
+     * @param null $config
      * @return EventPublisherBuilder
      */
     public function withMockTransporter($config=null) {

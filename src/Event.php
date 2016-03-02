@@ -6,6 +6,11 @@ class Event {
     public $header;
     public $body;
 
+    /**
+     * Event constructor.
+     * @param $type
+     * @param array $data
+     */
     public function __construct($type, array $data) {
         $this->header = new \stdClass();
         $this->header->type= $type;
@@ -13,6 +18,9 @@ class Event {
         $this->body = $data;
     }
 
+    /**
+     * @return mixed
+     */
     public function getType() {
         if(is_null($this->header)) {
             return(null);
