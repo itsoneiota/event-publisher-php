@@ -16,7 +16,7 @@
   "autoload": {
     "psr-4": {
       "itsoneiota\\eventpublisher\\": "src/",
-      "itsoneiota\\eventpublisher\\transporter": "src/transporter/"
+      "itsoneiota\\eventpublisher\\transporter\\": "src/transporter/"
     }
   }
 }
