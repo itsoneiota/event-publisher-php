@@ -1,0 +1,65 @@
+<?php
+namespace itsoneiota\eventpublisher;
+use \Aws\Kinesis\KinesisClient;
+use itsoneiota\eventpublisher\transporter\KinesisTransporter;
+
+class EventPublisherBuilder {
+
+    protected $transporter=NULL;
+    protected $config='';
+
+    /**
+     * @return EventPublisherBuilder
+     */
+    public static function create(){
+        return new EventPublisherBuilder();
+    }
+
+    /**
+     * @param KinesisClient $kinesisClient
+     * @param $config
+     * @return EventPublisherBuilder
+     */
+    public function withKinesisTransporter(KinesisClient $kinesisClient, $config) {
+        $this->transporter = new KinesisTransporter($kinesisClient, $config);
+        return($this);
+    }
+
+    /**
+     * @param $config
+     * @return EventPublisherBuilder
+     */
+    public function withConfig($config) {
+        $this->config = $config;
+        return($this);
+    }
+
+    /**
+     * @param EventPublisher $ep
+     */
+    public function configureEventPublisher(EventPublisher &$ep) {
+        $configs = json_decode(json_encode($this->config), true);
+        foreach($configs as $config=>$value) {
+            $setter = 'set'.ucfirst($config);
+            if(method_exists($ep, $setter)) {
+                $ep->$setter($value);
+            }
+        }
+    }
+
+    /**
+     * @return EventPublisher
+     * @throws \Exception
+     */
+    public function build() {
+        if(is_null($this->transporter)) {
+            throw new \Exception("No Transporter Set");
+        }
+        $ep = new EventPublisher($this->config);
+        $ep->setTransporter($this->transporter);
+        $this->configureEventPublisher($ep);
+        return($ep);
+    }
+
+
+}

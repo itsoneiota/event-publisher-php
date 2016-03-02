@@ -1,0 +1,22 @@
+{
+  "name": "itsoneiota/event-publisher",
+  "description": "PHP library to publish events",
+  "type":"library",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Owen Morgan",
+      "email": "owen.morgan@oneiota.co.uk"
+    }
+  ],
+  "require": {
+    "php":">=5.4",
+    "aws/aws-sdk-php": "2.6.16"
+  },
+  "autoload": {
+    "psr-4": {
+      "itsoneiota\\eventpublisher\\": "src/",
+      "itsoneiota\\eventpublisher\\transporter": "src/transporter/"
+    }
+  }
+}

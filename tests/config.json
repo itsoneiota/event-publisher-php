@@ -1,0 +1,9 @@
+{
+  "EventsPublisher": {
+    "enabled" : true,
+    "transport" : {
+        "type" : "Kinesis",
+        "stream": "event-queue"
+    }
+  }
+}
