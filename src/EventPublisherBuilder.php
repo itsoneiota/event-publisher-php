@@ -2,6 +2,7 @@
 namespace itsoneiota\eventpublisher;
 use \Aws\Kinesis\KinesisClient;
 use itsoneiota\eventpublisher\transporter\KinesisTransporter;
+use itsoneiota\eventpublisher\transporter\MockTransporter;
 
 class EventPublisherBuilder {
 
@@ -13,6 +14,16 @@ class EventPublisherBuilder {
      */
     public static function create(){
         return new EventPublisherBuilder();
+    }
+
+    /**
+     * @param \Memcached $memcached
+     * @param $config
+     * @return EventPublisherBuilder
+     */
+    public function withMockTransporter($config=null) {
+        $this->transporter = new MockTransporter($config);
+        return($this);
     }
 
     /**

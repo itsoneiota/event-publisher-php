@@ -1,13 +1,29 @@
 <?php
 
 namespace itsoneiota\eventpublisher\transporter;
+use itsoneiota\eventpublisher\Event;
 
 class MockTransporter {
 
-    protected $memcached;
+    protected $config;
 
-    public function __construct(\Memcached $memcached, $config) {
-        $this->memcached = $memcached;
+    /**
+     * MockTransporter constructor.
+     * @param $config
+     */
+    public function __construct($config=null) {
         $this->config = $config;
     }
+
+    /**
+     * @param Event $event
+     * @return bool
+     */
+    public function publish(Event $event) {
+        if(!is_null($event->getType())) {
+            return(true);
+        }
+        return(false);
+    }
+
 }

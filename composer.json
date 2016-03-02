@@ -10,8 +10,8 @@
     }
   ],
   "require": {
-    "php":">=5.4",
-    "aws/aws-sdk-php": "2.6.16"
+    "aws/aws-sdk-php": "2.6.16",
+    "phpunit/phpunit": "3.7.38"
   },
   "autoload": {
     "psr-4": {
