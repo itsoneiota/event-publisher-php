@@ -9,7 +9,7 @@ class Event {
     public function __construct($type, array $data) {
         $this->header = new \stdClass();
         $this->header->type= $type;
-        $this->header->timeStamp = (new \DateTime())->format(\DateTime::ATOM);
+        $this->header->timeStamp = round(microtime(true) * 1000);
         $this->body = $data;
     }
 
