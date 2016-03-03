@@ -33,13 +33,15 @@ e.g.
 
 ####Create Publisher using builder
 
-    $publisherConfig = new \stdClass();
-    $publisherConfig->EventsPublisher = new \stdClass();
-    $publisherConfig->EventsPublisher->transport = new \stdClass();
+    $serviceConfig = new \stdClass();
+    $serviceConfig->EventsPublisher = new \stdClass();
+    $serviceConfig->EventsPublisher->transport = new \stdClass();
 
-    $publisherConfig->EventsPublisher->enabled = true;
-    $publisherConfig->EventsPublisher->transport->type = 'Kinesis';
-    $publisherConfig->EventsPublisher->transport->stream = 'events-stream';
+    $serviceConfig->EventsPublisher->enabled = true;
+    $serviceConfig->EventsPublisher->transport->type = 'Kinesis';
+    $serviceConfig->EventsPublisher->transport->stream = 'events-stream';
+
+    $publisherConfig = $publisherConfig->EventsPublisher;
 
     $eventPublisherBuilder = EventPublisherBuilder::create()->withConfig($publisherConfig);
 
