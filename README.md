@@ -33,28 +33,32 @@ e.g.
 
 ####Create Publisher using builder
 
-    $config = new \stdClass();
-    $config->EventsPublisher = new \stdClass();
-    $config->EventsPublisher->transport = new \stdClass();
+    $publisherConfig = new \stdClass();
+    $publisherConfig->EventsPublisher = new \stdClass();
+    $publisherConfig->EventsPublisher->transport = new \stdClass();
 
-    $config->EventsPublisher->enabled = true;
-    $config->EventsPublisher->transport->type = 'kinesis';
-    $config->EventsPublisher->transport->stream = 'events-stream';
+    $publisherConfig->EventsPublisher->enabled = true;
+    $publisherConfig->EventsPublisher->transport->type = 'Kinesis';
+    $publisherConfig->EventsPublisher->transport->stream = 'events-stream';
 
-    $eventPublisher = \itsoneiota\eventpublisher\EventPublisherBuilder::create()
-                                                                            ->withConfig($config->EventsPublisher)
-                                                                            ->withKinesisTransporter($kinesis, $config->EventsPublisher->transport)
-                                                                            ->build();
+    $eventPublisherBuilder = EventPublisherBuilder::create()->withConfig($publisherConfig);
+
+    if($publisherConfig->transport->type == "Kinesis") {
+        $eventPublisherBuilder->withKinesisTransporter($this->createKinesisClient(), $publisherConfig->transport);
+    }
+
+    $eventPublisher = $eventPublisherBuilder->build();
 
 ####Create Event Object
 
-    // Constructor1 is the message type, this should be a constant event type within the service. Namespacing should be considered.
-    // Constructor2 is an array of fields which can be defined in any way.
+    // Constructor1 is the event origin.
+    // Constructor2 is the message type, this should be a constant event type within the service.
+    // Constructor3 is an array of fields which can be defined in any way. consider which properties is relevant to the event.
 
     const SERVICE_NAME = "WebFrontEnd";
     const EVENT_USER_LOGGED_IN = "UserLoggedIn";
 
-    $event = new \itsoneiota\eventpublisher\Event(self::SERVICE_NAME."/".self::EVENT_USER_LOGGED_IN, array("some message"=>"user logged in after 3 attempts","attempts remaining"=>3));
+    $event = new \itsoneiota\eventpublisher\Event(self::SERVICE_NAME, self::EVENT_USER_LOGGED_IN, array("some message"=>"user logged in after 3 attempts","attempts remaining"=>3));
 
 ####Publish the Event
 
