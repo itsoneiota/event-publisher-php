@@ -3,7 +3,7 @@
 namespace itsoneiota\eventpublisher\transporter;
 use itsoneiota\eventpublisher\Event;
 
-class MockTransporter {
+class MockTransporter implements Transporter {
 
     protected $config;
 

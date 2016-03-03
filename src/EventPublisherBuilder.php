@@ -49,10 +49,12 @@ class EventPublisherBuilder {
      */
     public function configureEventPublisher(EventPublisher &$ep) {
         $configs = json_decode(json_encode($this->config), true);
-        foreach($configs as $config=>$value) {
-            $setter = 'set'.ucfirst($config);
-            if(method_exists($ep, $setter)) {
-                $ep->$setter($value);
+        if(count($configs)) {
+            foreach($configs as $config=>$value) {
+                $setter = 'set'.ucfirst($config);
+                if(method_exists($ep, $setter)) {
+                    $ep->$setter($value);
+                }
             }
         }
     }
