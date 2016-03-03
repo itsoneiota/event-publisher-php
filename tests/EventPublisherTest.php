@@ -38,7 +38,7 @@ class EventPublisherTest extends \PHPUnit_Framework_TestCase {
         $eventPublisher = \itsoneiota\eventpublisher\EventPublisherBuilder::create()->withMockTransporter()->withConfig($config)->build();
         $this->assertTrue(get_class($eventPublisher)=="itsoneiota\\eventpublisher\\EventPublisher");
         $this->assertTrue($eventPublisher->getEnabled());
-        $event = new \itsoneiota\eventpublisher\Event("TestEvent", array("testKey"=>"testEvent"));
+        $event = new \itsoneiota\eventpublisher\Event("UnitTestOrigin","TestEventType", array("testKey"=>"testEvent"));
         $this->assertTrue($eventPublisher->publish($event));
     }
 }

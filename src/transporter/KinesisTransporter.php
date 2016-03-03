@@ -33,7 +33,7 @@ class KinesisTransporter implements Transporter {
     public function buildKinesisRecord(Event $event){
         $record = array(
             "StreamName"=>$this->getStreamName(),
-            "Data"=>json_encode($event),
+            "Data"=>$event->encode(),
             "PartitionKey"=>$event->getType()
         );
         return($record);

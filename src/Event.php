@@ -3,29 +3,81 @@ namespace itsoneiota\eventpublisher;
 
 class Event {
 
-    public $header;
-    public $body;
+    protected $origin="UNDEFINED";
+    protected $type;
+    protected $data;
+    protected $timestamp;
 
     /**
      * Event constructor.
-     * @param $type
-     * @param array $data
+     * @param null $origin
+     * @param null $type
+     * @param array|null $data
      */
-    public function __construct($type, array $data) {
-        $this->header = new \stdClass();
-        $this->header->type= $type;
-        $this->header->timeStamp = round(microtime(true) * 1000);
-        $this->body = $data;
+    public function __construct($origin=null, $type=null, array $data=null) {
+        $this->origin = $origin;
+        $this->type = $type;
+        $this->data = $data;
+        $this->timestamp = round(microtime(true) * 1000);
+    }
+
+    public function encode() {
+        $event = new \stdClass();
+        $event->header = new \stdClass();
+        $event->header->origin = $this->origin;
+        $event->header->type = $this->type;
+        $event->header->timeStamp = $this->timestamp;
+        $event->body = $this->data;
+        return(json_encode($event));
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getOrigin() {
+        return($this->origin);
+    }
+
+    /**
+     * @param $origin
+     * @return Event
+     */
+    public function setOrigin($origin) {
+        $this->origin = $origin;
+        return($this);
+    }
+
+    /**
+     * @param null $type
+     * @return Event
+     */
+    public function setType($type) {
+        $this->type = $type;
+        return($this);
     }
 
     /**
      * @return mixed
      */
     public function getType() {
-        if(is_null($this->header)) {
-            return(null);
-        }
-        return($this->header->type);
+        return($this->type);
     }
+
+    /**
+     * @return array|null
+     */
+    public function getData() {
+        return($this->data);
+    }
+
+    /**
+     * @param $data
+     * @return Event
+     */
+    public function setData($data) {
+        $this->data = $data;
+        return($this);
+    }
+
 
 }
