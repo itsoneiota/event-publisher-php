@@ -58,7 +58,10 @@ e.g.
     const SERVICE_NAME = "WebFrontEnd";
     const EVENT_USER_LOGGED_IN = "UserLoggedIn";
 
-    $event = new \itsoneiota\eventpublisher\Event(self::SERVICE_NAME, self::EVENT_USER_LOGGED_IN, array("some message"=>"user logged in after 3 attempts","attempts remaining"=>3));
+    $event = new \itsoneiota\eventpublisher\Event(self::SERVICE_NAME,
+                                                    self::EVENT_USER_LOGGED_IN,
+                                                    array("some message"=>"user logged in after 3 attempts","attempts remaining"=>3)
+                                                  );
 
 ####Publish the Event
 
