@@ -51,6 +51,7 @@ class EventPublisherTest extends \PHPUnit_Framework_TestCase {
         $config->enabled = true;
         $config->transport = new stdClass();
         $config->transport->fileLocation = "tests/Events.txt";
+        $config->transport->periodicallyDelete = true;
         $eventPublisher = \itsoneiota\eventpublisher\EventPublisherBuilder::create()
                                                         ->withTextFileTransporter($config->transport)
                                                         ->withConfig($config)

@@ -7,7 +7,6 @@ use itsoneiota\eventpublisher\Event;
 class TextFileTransporter implements Transporter {
 
     protected $config;
-    protected $periodicallyDelete;
 
     /**
      * TextFileTransporter constructor.
@@ -47,7 +46,7 @@ class TextFileTransporter implements Transporter {
      * @return bool
      */
     public function publish(Event $event) {
-        if(file_exists($this->getFileLocation())) {
+        if(file_exists($this->getFileLocation()) && $this->config->periodicallyDelete===true) {
             if (filemtime($this->getFileLocation()) < time() - 3600) {
                 unlink($this->getFileLocation());
             }
