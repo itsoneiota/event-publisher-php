@@ -2,3 +2,4 @@ vendor/*
 .idea/
 tests/testPutRecord.php
 composer.phar
+tests/Events.txt

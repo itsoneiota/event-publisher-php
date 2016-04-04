@@ -41,4 +41,24 @@ class EventPublisherTest extends \PHPUnit_Framework_TestCase {
         $event = new \itsoneiota\eventpublisher\Event("UnitTestOrigin","TestEventType", array("testKey"=>"testEvent"));
         $this->assertTrue($eventPublisher->publish($event));
     }
+
+    /**
+     * can create a Text File Transporter Publisher, and publish event
+     * @test
+     */
+    public function canCreateATextFileTransporterPublisher() {
+        $config = new stdClass();
+        $config->enabled = true;
+        $config->transport = new stdClass();
+        $config->transport->fileLocation = "tests/Events.txt";
+        $eventPublisher = \itsoneiota\eventpublisher\EventPublisherBuilder::create()
+                                                        ->withTextFileTransporter($config->transport)
+                                                        ->withConfig($config)
+                                                        ->build();
+
+        $this->assertTrue(get_class($eventPublisher)=="itsoneiota\\eventpublisher\\EventPublisher");
+        $this->assertTrue($eventPublisher->getEnabled());
+        $event = new \itsoneiota\eventpublisher\Event("UnitTestOrigin","TestEventType", array("testKey"=>"testEvent"));
+        $this->assertTrue($eventPublisher->publish($event));
+    }
 }

@@ -3,6 +3,7 @@ namespace itsoneiota\eventpublisher;
 use \Aws\Kinesis\KinesisClient;
 use itsoneiota\eventpublisher\transporter\KinesisTransporter;
 use itsoneiota\eventpublisher\transporter\MockTransporter;
+use itsoneiota\eventpublisher\transporter\TextFileTransporter;
 
 class EventPublisherBuilder {
 
@@ -32,6 +33,15 @@ class EventPublisherBuilder {
      */
     public function withKinesisTransporter(KinesisClient $kinesisClient, $config) {
         $this->transporter = new KinesisTransporter($kinesisClient, $config);
+        return($this);
+    }
+
+    /**
+     * @param $config
+     * @return EventPublisherBuilder
+     */
+    public function withTextFileTransporter($config) {
+        $this->transporter = new TextFileTransporter($config);
         return($this);
     }
 
