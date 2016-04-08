@@ -1,6 +1,7 @@
 <?php
 namespace itsoneiota\eventpublisher;
 use \Aws\Kinesis\KinesisClient;
+use itsoneiota\eventpublisher\transporter\ElasticSearchTransporter;
 use itsoneiota\eventpublisher\transporter\KinesisTransporter;
 use itsoneiota\eventpublisher\transporter\MockTransporter;
 use itsoneiota\eventpublisher\transporter\TextFileTransporter;
@@ -42,6 +43,11 @@ class EventPublisherBuilder {
      */
     public function withTextFileTransporter($config) {
         $this->transporter = new TextFileTransporter($config);
+        return($this);
+    }
+
+    public function withElasticSearchTransporter($config) {
+        $this->transporter = new ElasticSearchTransporter($config);
         return($this);
     }
 
