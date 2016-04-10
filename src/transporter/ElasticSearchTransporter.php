@@ -58,6 +58,7 @@ class ElasticSearchTransporter implements Transporter {
         $tuCurl = curl_init();
         curl_setopt($tuCurl, CURLOPT_URL, $ep);
         curl_setopt($tuCurl, CURLOPT_POSTFIELDS, $event->encode());
+        $tuData = curl_exec($tuCurl);
         if(!curl_errno($tuCurl)){
             return(true);
         } else {
