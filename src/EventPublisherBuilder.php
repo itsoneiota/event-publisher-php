@@ -1,7 +1,9 @@
 <?php
 namespace itsoneiota\eventpublisher;
+use Aws\Firehose\FirehoseClient;
 use \Aws\Kinesis\KinesisClient;
 use itsoneiota\eventpublisher\transporter\ElasticSearchTransporter;
+use itsoneiota\eventpublisher\transporter\FirehoseTransporter;
 use itsoneiota\eventpublisher\transporter\KinesisTransporter;
 use itsoneiota\eventpublisher\transporter\MockTransporter;
 use itsoneiota\eventpublisher\transporter\TextFileTransporter;
@@ -34,6 +36,16 @@ class EventPublisherBuilder {
      */
     public function withKinesisTransporter(KinesisClient $kinesisClient, $config) {
         $this->transporter = new KinesisTransporter($kinesisClient, $config);
+        return($this);
+    }
+
+    /**
+     * @param FirehoseClient $firehoseClient
+     * @param $config
+     * @return EventPublisherBuilder
+     */
+    public function withFirehoseTransporter(FirehoseClient $firehoseClient, $config) {
+        $this->transporter = new FirehoseTransporter($firehoseClient, $config);
         return($this);
     }
 

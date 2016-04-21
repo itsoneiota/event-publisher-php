@@ -89,4 +89,5 @@ class EventPublisherTest extends \PHPUnit_Framework_TestCase {
 //        $event = new \itsoneiota\eventpublisher\Event("UnitTestOrigin","TestEventType", array("testKey"=>"testEvent"));
 //        $this->assertTrue($eventPublisher->publish($event));
     }
+
 }
