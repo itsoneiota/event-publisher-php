@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "aws/aws-sdk-php": "2.6.16",
+    "aws/aws-sdk-php": "3.18.0",
     "phpunit/phpunit": "3.7.*"
   },
   "autoload": {
