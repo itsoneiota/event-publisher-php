@@ -55,7 +55,7 @@ class KinesisTransporter implements Transporter {
      * @throws \Exception
      */
     protected function getPartitions() {
-        $partitions=0;
+        $partitions=1;
         if(property_exists($this->config, "partitions")) {
             $partitions=$this->config->partitions;
         }
@@ -71,7 +71,7 @@ class KinesisTransporter implements Transporter {
      */
     protected function getPartitionKey() {
         $partitions = $this->getPartitions();
-        if($partitions==0) {
+        if($partitions==1) {
             return((string)$partitions);
         }
         return((string)rand(0,$partitions));
