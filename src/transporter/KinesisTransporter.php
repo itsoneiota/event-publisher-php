@@ -71,6 +71,9 @@ class KinesisTransporter implements Transporter {
      */
     protected function getPartitionKey() {
         $partitions = $this->getPartitions();
+        if($partitions < 1) {
+            $partitions=1;
+        }
         if($partitions==1) {
             return((string)$partitions);
         }
