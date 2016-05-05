@@ -34,7 +34,7 @@ class KinesisTransporter implements Transporter {
         $record = array(
             "StreamName"=>$this->getStreamName(),
             "Data"=>$event->encode(),
-            "PartitionKey"=>$event->getType()
+            "PartitionKey"=>$this->getPartitionKey()
         );
         return($record);
     }
@@ -48,5 +48,32 @@ class KinesisTransporter implements Transporter {
             throw new \Exception("Kinesis stream name required");
         }
         return($this->config->stream);
+    }
+
+    /**
+     * @return int
+     * @throws \Exception
+     */
+    protected function getPartitions() {
+        $partitions=0;
+        if(property_exists($this->config, "partitions")) {
+            $partitions=$this->config->partitions;
+        }
+        return((int)$partitions);
+    }
+
+    /**
+     *
+     * Randomises the stream, needs to be a string
+     *
+     * @return string
+     * @throws \Exception
+     */
+    protected function getPartitionKey() {
+        $partitions = $this->getPartitions();
+        if($partitions==0) {
+            return((string)$partitions);
+        }
+        return((string)rand(0,$partitions));
     }
 }
