@@ -2,15 +2,17 @@
 namespace itsoneiota\eventpublisher;
 use Aws\Firehose\FirehoseClient;
 use \Aws\Kinesis\KinesisClient;
+use Aws\Sqs\SqsClient;
 use itsoneiota\eventpublisher\transporter\ElasticSearchTransporter;
 use itsoneiota\eventpublisher\transporter\FirehoseTransporter;
 use itsoneiota\eventpublisher\transporter\KinesisTransporter;
 use itsoneiota\eventpublisher\transporter\MockTransporter;
+use itsoneiota\eventpublisher\transporter\SQSTransporter;
 use itsoneiota\eventpublisher\transporter\TextFileTransporter;
 
 class EventPublisherBuilder {
 
-    protected $transporter=NULL;
+    protected $transporters=array();
     protected $config='';
 
     /**
@@ -25,7 +27,7 @@ class EventPublisherBuilder {
      * @return EventPublisherBuilder
      */
     public function withMockTransporter($config=null) {
-        $this->transporter = new MockTransporter($config);
+        $this->transporters[] = new MockTransporter($config);
         return($this);
     }
 
@@ -35,7 +37,7 @@ class EventPublisherBuilder {
      * @return EventPublisherBuilder
      */
     public function withKinesisTransporter(KinesisClient $kinesisClient, $config) {
-        $this->transporter = new KinesisTransporter($kinesisClient, $config);
+        $this->transporters[] = new KinesisTransporter($kinesisClient, $config);
         return($this);
     }
 
@@ -45,7 +47,17 @@ class EventPublisherBuilder {
      * @return EventPublisherBuilder
      */
     public function withFirehoseTransporter(FirehoseClient $firehoseClient, $config) {
-        $this->transporter = new FirehoseTransporter($firehoseClient, $config);
+        $this->transporters[] = new FirehoseTransporter($firehoseClient, $config);
+        return($this);
+    }
+
+    /**
+     * @param SqsClient $sqsClient
+     * @param $config
+     * @return EventPublisherBuilder
+     */
+    public function withSQSTransporter(SqsClient $sqsClient, $config) {
+        $this->transporters[] = new SQSTransporter($sqsClient, $config);
         return($this);
     }
 
@@ -54,12 +66,12 @@ class EventPublisherBuilder {
      * @return EventPublisherBuilder
      */
     public function withTextFileTransporter($config) {
-        $this->transporter = new TextFileTransporter($config);
+        $this->transporters[] = new TextFileTransporter($config);
         return($this);
     }
 
     public function withElasticSearchTransporter($config) {
-        $this->transporter = new ElasticSearchTransporter($config);
+        $this->transporters[] = new ElasticSearchTransporter($config);
         return($this);
     }
 
@@ -92,14 +104,14 @@ class EventPublisherBuilder {
      * @throws \Exception
      */
     public function build() {
-        if(is_null($this->transporter)) {
+        if(empty($this->transporters)) {
             throw new \Exception("No Transporter Set");
         }
         $ep = new EventPublisher($this->config);
-        $ep->setTransporter($this->transporter);
+        foreach($this->transporters as $transporter) {
+            $ep->addTransporter($transporter);
+        }
         $this->configureEventPublisher($ep);
         return($ep);
     }
-
-
 }

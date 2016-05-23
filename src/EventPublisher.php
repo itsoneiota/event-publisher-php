@@ -4,21 +4,21 @@ use itsoneiota\eventpublisher\transporter\Transporter;
 
 class EventPublisher {
 
-    protected $transporter;
+    protected $transporters=array();
     protected $enabled;
 
     /**
      * @return Transporter
      */
-    public function getTransporter() {
-        return $this->transporter;
+    public function getTransporters() {
+        return $this->transporters;
     }
 
     /**
      * @param Transporter $transporter
      */
-    public function setTransporter(Transporter $transporter) {
-        $this->transporter = $transporter;
+    public function addTransporter(Transporter $transporter) {
+        $this->transporters[] = $transporter;
     }
 
     /**
@@ -43,7 +43,14 @@ class EventPublisher {
         if(!$this->enabled) {
             return(TRUE);
         }
-        return($this->getTransporter()->publish($event));
+        $success=true;
+        foreach($this->getTransporters() as $transporter) {
+            $success=$transporter->publish($event);
+            if(!$success) {
+                break;
+            }
+        }
+        return($success);
     }
 
 }

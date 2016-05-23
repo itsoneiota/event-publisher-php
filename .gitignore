@@ -3,3 +3,4 @@ vendor/*
 tests/testPutRecord.php
 composer.phar
 tests/Events.txt
+composer.lock
