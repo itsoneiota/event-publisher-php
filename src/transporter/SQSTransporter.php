@@ -25,13 +25,33 @@ class SQSTransporter implements Transporter {
      * @return bool
      */
     public function publish(Event $event) {
-        $result = $this->sqsClient->getQueueUrl(array('QueueName' => $this->getQueueName()));
-        $qurl = $result->get('QueueUrl');
+        $qurl = $this->getQueueURL();
         $result = $this->sqsClient->sendMessage(array(
             'QueueUrl'    => $qurl,
             'MessageBody' => $event->encode(),
         ));
         return(property_exists($result, "data"));
+    }
+
+
+    /**
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function getQueueURL() {
+        return sprintf("%s/queue/%s", $this->getHostURL(), $this->getQueueName());
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function getHostURL() {
+        if(!property_exists($this->config, "host")) {
+            throw new \Exception("SQS Hostname required");
+        }
+        return($this->config->host);
     }
 
     /**
