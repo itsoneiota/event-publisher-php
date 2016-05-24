@@ -35,6 +35,28 @@ class SQSTransporter implements Transporter {
     }
 
     /**
+     * @return string
+     * @throws \Exception
+     */
+    protected function getQueueURL() {
+        if(!property_exists($this->config, "queueURL")) {
+            return sprintf("%s/queue/%s", $this->getHostURL(), $this->getQueueName());
+        }
+        return($this->config->queueURL);
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function getHostURL() {
+        if(!property_exists($this->config, "host")) {
+            throw new \Exception("SQS Hostname required");
+        }
+        return($this->config->host);
+    }
+
+    /**
      * @return mixed
      * @throws \Exception
      */
