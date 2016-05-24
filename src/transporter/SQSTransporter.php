@@ -46,8 +46,8 @@ class SQSTransporter implements Transporter {
      */
     protected function getQueueURL($qname) {
         $qurl = null;
-        if(!property_exists($this->config, "queueURL")) {
-            return sprintf("%s/queue/%s", $this->getHostURL(), $this->getQueueName());
+        if(property_exists($this->config, "queueURL")) {
+            return($this->config->queueURL);
         }
         try {
             $result = $this->sqsClient->getQueueUrl(array('QueueName' => $qname));
