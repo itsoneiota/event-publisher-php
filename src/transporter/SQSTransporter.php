@@ -34,7 +34,7 @@ class SQSTransporter implements Transporter {
      */
     public function publish(Event $event) {
         $result = $this->sqsClient->sendMessage(array(
-            'QueueUrl'    => $this->getQueueURL(),
+            'QueueUrl'    => $this->getQueueURL($qname),
             'MessageBody' => $event->encode(),
         ));
         return(property_exists($result, "data"));
@@ -44,11 +44,31 @@ class SQSTransporter implements Transporter {
      * @return string
      * @throws \Exception
      */
-    protected function getQueueURL() {
-        if(!property_exists($this->config, "queueURL")) {
-            return sprintf("%s/queue/%s", $this->getHostURL(), $this->getQueueName());
+    protected function getQueueURL($qname) {
+        $qurl = null;
+        try {
+            $result = $this->sqsClient->getQueueUrl(array('QueueName' => $qname));
+            $qurl = $result->get('QueueUrl');
+            return($qurl);
+        }
+        catch(\Exception $ex) {}
+        if(is_null($qurl)) {
+            if($this->getCreateQueueIfNotExist()) {
+                $this->sqsClient->createQueue(array('QueueName' => $qname));
+                return($this->getQueueURL($qname));
+            }
         }
         return($this->config->queueURL);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getCreateQueueIfNotExist() {
+        if(!property_exists($this->config, "createQueue")) {
+           return(false);
+        }
+        return(true);
     }
 
     /**
