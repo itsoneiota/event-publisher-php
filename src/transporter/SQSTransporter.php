@@ -9,6 +9,7 @@ class SQSTransporter implements Transporter {
 
     protected $sqsClient;
     protected $config;
+    const TYPE = "SQS";
 
     /**
      * SQSTransporter constructor.
@@ -18,6 +19,13 @@ class SQSTransporter implements Transporter {
     public function __construct(SqsClient $kinesisClient, $config) {
         $this->sqsClient = $kinesisClient;
         $this->config = $config;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return self::TYPE;
     }
 
     /**

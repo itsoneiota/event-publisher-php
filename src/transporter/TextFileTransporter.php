@@ -7,6 +7,7 @@ use itsoneiota\eventpublisher\Event;
 class TextFileTransporter implements Transporter {
 
     protected $config;
+    const TYPE = "TextFile";
 
     /**
      * TextFileTransporter constructor.
@@ -14,6 +15,13 @@ class TextFileTransporter implements Transporter {
      */
     public function __construct($config) {
         $this->config = $config;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return self::TYPE;
     }
 
     /**

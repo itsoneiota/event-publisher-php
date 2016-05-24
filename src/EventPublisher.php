@@ -43,14 +43,15 @@ class EventPublisher {
         if(!$this->enabled) {
             return(TRUE);
         }
-        $success=true;
+        $results=array();
         foreach($this->getTransporters() as $transporter) {
             $success=$transporter->publish($event);
             if(!$success) {
                 break;
             }
+            $results[$transporter->getType()]["Success"] = $success == true ? "True" : "False";
         }
-        return($success);
+        return($results);
     }
 
 }

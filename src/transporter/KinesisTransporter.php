@@ -7,6 +7,7 @@ class KinesisTransporter implements Transporter {
 
     protected $config;
     protected $kinesisClient;
+    const TYPE = "Kinesis";
 
     /**
      * KinesisTransporter constructor.
@@ -16,6 +17,13 @@ class KinesisTransporter implements Transporter {
     public function __construct(KinesisClient $kinesisClient, $config) {
         $this->kinesisClient = $kinesisClient;
         $this->config = $config;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return self::TYPE;
     }
 
     /**

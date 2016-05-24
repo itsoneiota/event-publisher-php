@@ -9,5 +9,6 @@ interface Transporter {
      * @return mixed
      */
     public function publish(Event $event);
+    public function getType();
 
 }

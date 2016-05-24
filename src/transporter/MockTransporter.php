@@ -6,6 +6,7 @@ use itsoneiota\eventpublisher\Event;
 class MockTransporter implements Transporter {
 
     protected $config;
+    const TYPE = "Mock";
 
     /**
      * MockTransporter constructor.
@@ -13,6 +14,13 @@ class MockTransporter implements Transporter {
      */
     public function __construct($config=null) {
         $this->config = $config;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return self::TYPE;
     }
 
     /**

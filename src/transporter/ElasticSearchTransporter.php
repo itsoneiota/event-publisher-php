@@ -7,6 +7,7 @@ use itsoneiota\eventpublisher\Event;
 class ElasticSearchTransporter implements Transporter {
 
     protected $config;
+    const TYPE = "ElasticSearch";
 
     /**
      * ElasticSearchTransporter constructor.
@@ -14,6 +15,13 @@ class ElasticSearchTransporter implements Transporter {
      */
     public function __construct($config) {
         $this->config = $config;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return self::TYPE;
     }
 
     /**
