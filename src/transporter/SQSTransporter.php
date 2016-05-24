@@ -25,10 +25,8 @@ class SQSTransporter implements Transporter {
      * @return bool
      */
     public function publish(Event $event) {
-        $result = $this->sqsClient->getQueueUrl(array('QueueName' => $this->getQueueName()));
-        $qurl = $result->get('QueueUrl');
         $result = $this->sqsClient->sendMessage(array(
-            'QueueUrl'    => $qurl,
+            'QueueUrl'    => $this->getQueueURL(),
             'MessageBody' => $event->encode(),
         ));
         return(property_exists($result, "data"));
