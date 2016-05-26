@@ -6,11 +6,10 @@ namespace itsoneiota\eventpublisher\transporter;
 use Aws\Firehose\FirehoseClient;
 use itsoneiota\eventpublisher\Event;
 
-class FirehoseTransporter implements Transporter {
+class FirehoseTransporter extends AbstractTransporter {
 
-    protected $config;
     protected $firehoseClient;
-    const TYPE = "FireHose";
+    protected $type = "FireHose";
 
     /**
      * KinesisTransporter constructor.
@@ -20,13 +19,6 @@ class FirehoseTransporter implements Transporter {
     public function __construct(FirehoseClient $firehoseClient, $config) {
         $this->firehoseClient = $firehoseClient;
         $this->config = $config;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType() {
-        return self::TYPE;
     }
 
     /**

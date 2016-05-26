@@ -4,10 +4,9 @@ namespace itsoneiota\eventpublisher\transporter;
 
 use itsoneiota\eventpublisher\Event;
 
-class TextFileTransporter implements Transporter {
+class TextFileTransporter extends AbstractTransporter {
 
-    protected $config;
-    const TYPE = "TextFile";
+    protected $type = "TextFile";
 
     /**
      * TextFileTransporter constructor.
@@ -15,13 +14,6 @@ class TextFileTransporter implements Transporter {
      */
     public function __construct($config) {
         $this->config = $config;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType() {
-        return self::TYPE;
     }
 
     /**

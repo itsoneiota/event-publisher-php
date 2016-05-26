@@ -1,15 +1,12 @@
 <?php
 namespace itsoneiota\eventpublisher\transporter;
-
-
 use Aws\Sqs\SqsClient;
 use itsoneiota\eventpublisher\Event;
 
-class SQSTransporter implements Transporter {
+class SQSTransporter extends AbstractTransporter {
 
     protected $sqsClient;
-    protected $config;
-    const TYPE = "SQS";
+    protected $type = "SQS";
 
     /**
      * SQSTransporter constructor.
@@ -19,13 +16,6 @@ class SQSTransporter implements Transporter {
     public function __construct(SqsClient $kinesisClient, $config) {
         $this->sqsClient = $kinesisClient;
         $this->config = $config;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType() {
-        return self::TYPE;
     }
 
     /**

@@ -3,11 +3,10 @@ namespace itsoneiota\eventpublisher\transporter;
 use Aws\Kinesis\KinesisClient;
 use itsoneiota\eventpublisher\Event;
 
-class KinesisTransporter implements Transporter {
+class KinesisTransporter extends AbstractTransporter {
 
-    protected $config;
     protected $kinesisClient;
-    const TYPE = "Kinesis";
+    protected $type = "Kinesis";
 
     /**
      * KinesisTransporter constructor.
@@ -17,13 +16,6 @@ class KinesisTransporter implements Transporter {
     public function __construct(KinesisClient $kinesisClient, $config) {
         $this->kinesisClient = $kinesisClient;
         $this->config = $config;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType() {
-        return self::TYPE;
     }
 
     /**

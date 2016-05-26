@@ -4,10 +4,9 @@ namespace itsoneiota\eventpublisher\transporter;
 
 use itsoneiota\eventpublisher\Event;
 
-class ElasticSearchTransporter implements Transporter {
+class ElasticSearchTransporter extends AbstractTransporter {
 
-    protected $config;
-    const TYPE = "ElasticSearch";
+    protected $type = "ElasticSearch";
 
     /**
      * ElasticSearchTransporter constructor.
@@ -15,13 +14,6 @@ class ElasticSearchTransporter implements Transporter {
      */
     public function __construct($config) {
         $this->config = $config;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType() {
-        return self::TYPE;
     }
 
     /**
