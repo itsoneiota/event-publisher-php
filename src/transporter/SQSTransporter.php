@@ -15,7 +15,7 @@ class SQSTransporter extends AbstractTransporter {
      */
     public function __construct(SqsClient $kinesisClient, $config) {
         $this->sqsClient = $kinesisClient;
-        $this->config = $config;
+        parent::__construct($config);
     }
 
     /**
@@ -27,7 +27,11 @@ class SQSTransporter extends AbstractTransporter {
             'QueueUrl'    => $this->getQueueURL($this->getQueueName()),
             'MessageBody' => $event->encode(),
         ));
-        return(property_exists($result, "data"));
+        if(!property_exists($result, "data")) {
+            return(false);
+        }
+        parent::publish($event);
+        return(true);
     }
 
     /**

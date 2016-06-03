@@ -18,7 +18,7 @@ class FirehoseTransporter extends AbstractTransporter {
      */
     public function __construct(FirehoseClient $firehoseClient, $config) {
         $this->firehoseClient = $firehoseClient;
-        $this->config = $config;
+        parent::__construct($config);
     }
 
     /**
@@ -26,7 +26,11 @@ class FirehoseTransporter extends AbstractTransporter {
      * @return bool
      */
     public function publish(Event $event) {
-        return(property_exists($this->firehoseClient->putRecord($this->buildFirehoseRecord($event)), "data"));
+        if(!property_exists($this->firehoseClient->putRecord($this->buildFirehoseRecord($event)), "data")) {
+            return(false);
+        }
+        parent::publish($event);
+        return(true);
     }
 
     /**

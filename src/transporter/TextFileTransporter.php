@@ -9,14 +9,6 @@ class TextFileTransporter extends AbstractTransporter {
     protected $type = "TextFile";
 
     /**
-     * TextFileTransporter constructor.
-     * @param $config
-     */
-    public function __construct($config) {
-        $this->config = $config;
-    }
-
-    /**
      * @return mixed
      * @throws \Exception
      */
@@ -51,7 +43,13 @@ class TextFileTransporter extends AbstractTransporter {
                 unlink($this->getFileLocation());
             }
         }
-        return(file_put_contents($this->getFileLocation(), $event->encode() . PHP_EOL, FILE_APPEND) != false);
+        if(file_put_contents($this->getFileLocation(), $event->encode() . PHP_EOL, FILE_APPEND) != false) {
+            parent::publish($event);
+            return(true);
+        }
+        else {
+            return(false);
+        }
     }
 
 }

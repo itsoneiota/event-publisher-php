@@ -154,6 +154,111 @@ class EventPublisherTest extends \PHPUnit_Framework_TestCase {
 
     /**
      *
+     * This provides the ability to provide a metric component.
+     * @test
+     *
+     */
+    public function canCreateAPublisherWithAMetricsPublisher() {
+        $config = new stdClass();
+        $config->enabled = true;
+        $config->transport = new stdClass();
+        $config->transport->type = "Text";
+        $config->transport->fileLocation = "tests/Events.txt";
+        $config->transport->periodicallyDelete = true;
+        $config->transport->metrics = new stdClass();
+        $config->transport->metrics->enabled = true;
+        $config->transport->metrics->type = "mock";
+
+        $eventPublisher = \itsoneiota\eventpublisher\EventPublisherBuilder::create()
+                                                            ->withTextFileTransporter($config->transport)
+                                                            ->withConfig($config)
+                                                            ->build();
+
+        $transporter = $eventPublisher->getTransporters()[0];
+        $this->assertTrue($transporter->enabledForMetrics());
+    }
+
+    /**
+     *
+     * Tests the mock metrics publisher
+     * @test
+     *
+     */
+    public function canCreateAPublisherWithAMockMetricsPublisher() {
+        $config = new stdClass();
+        $config->enabled = true;
+        $config->transport = new stdClass();
+        $config->transport->type = "Text";
+        $config->transport->fileLocation = "tests/Events.txt";
+        $config->transport->periodicallyDelete = true;
+        $config->transport->metrics = new stdClass();
+        $config->transport->metrics->enabled = true;
+        $config->transport->metrics->type = "mock";
+
+        $eventPublisher = \itsoneiota\eventpublisher\EventPublisherBuilder::create()
+            ->withTextFileTransporter($config->transport)
+            ->withConfig($config)
+            ->build();
+
+        $transporter = $eventPublisher->getTransporters()[0];
+        $this->assertTrue($transporter->enabledForMetrics());
+
+        $event = new \itsoneiota\eventpublisher\Event("UnitTestOrigin","TestEventType", array("testKey"=>"testEvent"));
+        $result = $eventPublisher->publish($event);
+        $this->assertTrue($this->assesResult($result));
+    }
+
+    /**
+     *
+     * This provides the ability to not provide a metric component.
+     *
+     * Checks enable toggle, and if no config provided.
+     *
+     * @test
+     *
+     */
+    public function canCreateAPublisherWithoutAMetricsPublisher() {
+        $config = new stdClass();
+        $config->enabled = true;
+        $config->transport = new stdClass();
+        $config->transport->type = "Text";
+        $config->transport->fileLocation = "tests/Events.txt";
+        $config->transport->periodicallyDelete = true;
+        $config->transport->metrics = new stdClass();
+        $config->transport->metrics->enabled = false;
+        $config->transport->metrics->source = "TESTHOST";
+        $config->transport->metrics->type = "statsd";
+        $config->transport->metrics->host = "http://localhost";
+
+        $eventPublisher = \itsoneiota\eventpublisher\EventPublisherBuilder::create()
+            ->withTextFileTransporter($config->transport)
+            ->withConfig($config)
+            ->build();
+
+        $transporter = $eventPublisher->getTransporters()[0];
+
+        $this->assertFalse($transporter->enabledForMetrics());
+
+        $config = new stdClass();
+        $config->enabled = true;
+        $config->transport = new stdClass();
+        $config->transport->type = "Text";
+        $config->transport->fileLocation = "tests/Events.txt";
+        $config->transport->periodicallyDelete = true;
+
+        $eventPublisher = \itsoneiota\eventpublisher\EventPublisherBuilder::create()
+            ->withTextFileTransporter($config->transport)
+            ->withConfig($config)
+            ->build();
+
+        $transporter = $eventPublisher->getTransporters()[0];
+
+        $this->assertFalse($transporter->enabledForMetrics());
+
+    }
+
+    /**
+     *
      * Needs ES running!
      *
      * can Create An ElasticSearch Transporter Publisher, and publish event

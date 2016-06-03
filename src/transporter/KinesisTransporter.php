@@ -15,7 +15,7 @@ class KinesisTransporter extends AbstractTransporter {
      */
     public function __construct(KinesisClient $kinesisClient, $config) {
         $this->kinesisClient = $kinesisClient;
-        $this->config = $config;
+        parent::__construct($config);
     }
 
     /**
@@ -23,7 +23,11 @@ class KinesisTransporter extends AbstractTransporter {
      * @return bool
      */
     public function publish(Event $event) {
-        return(property_exists($this->kinesisClient->putRecord($this->buildKinesisRecord($event)), "data"));
+        if(!property_exists($this->kinesisClient->putRecord($this->buildKinesisRecord($event)), "data")) {
+            return(false);
+        }
+        parent::publish($event);
+        return(true);
     }
 
     /**

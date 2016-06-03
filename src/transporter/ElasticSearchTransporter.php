@@ -9,14 +9,6 @@ class ElasticSearchTransporter extends AbstractTransporter {
     protected $type = "ElasticSearch";
 
     /**
-     * ElasticSearchTransporter constructor.
-     * @param $config
-     */
-    public function __construct($config) {
-        $this->config = $config;
-    }
-
-    /**
      * @return mixed
      * @throws \Exception
      */
@@ -62,6 +54,7 @@ class ElasticSearchTransporter extends AbstractTransporter {
         curl_setopt($tuCurl, CURLOPT_POSTFIELDS, $event->encode());
         $tuData = curl_exec($tuCurl);
         if(!curl_errno($tuCurl)){
+            parent::publish($event);
             return(true);
         } else {
             return(false);
