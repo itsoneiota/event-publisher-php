@@ -11,7 +11,7 @@
   ],
   "require": {
     "aws/aws-sdk-php": "2.6.16",
-    "vend/statsd": "1.1.1"
+    "darkflib/php-statsd": "dev-master"
   },
   "require-dev" :{
     "phpunit/phpunit": "3.7.*"

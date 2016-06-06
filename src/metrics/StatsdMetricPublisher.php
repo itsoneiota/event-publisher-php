@@ -1,10 +1,7 @@
 <?php
 
 namespace itsoneiota\eventpublisher\metrics;
-
-use Vend\Statsd\Client;
-use Vend\Statsd\Factory;
-use Vend\Statsd\Socket;
+use PhpStatsD\StatsD;
 
 class StatsdMetricPublisher extends AbstractMetricPublisher {
 
@@ -33,10 +30,7 @@ class StatsdMetricPublisher extends AbstractMetricPublisher {
         if(property_exists($this->config, "port")) {
             $port = $this->config->port == null ? 8125 : (int)$this->config->port;
         }
-        $this->client = new Client(
-            new Socket($host, $port),
-            new Factory()
-        );
+        $this->client = new StatsD($host, $port);
     }
 
     /**
@@ -45,7 +39,6 @@ class StatsdMetricPublisher extends AbstractMetricPublisher {
      * @return void
      */
     public function inc($metric, $value=1){
-        $this->client->counter($metric, $value);
-        $this->client->flush();
+        $this->client->counting($metric, $value);
     }
 }
