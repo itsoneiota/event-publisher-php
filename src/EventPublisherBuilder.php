@@ -3,12 +3,14 @@ namespace itsoneiota\eventpublisher;
 use Aws\Firehose\FirehoseClient;
 use \Aws\Kinesis\KinesisClient;
 use Aws\Sqs\SqsClient;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use itsoneiota\eventpublisher\transporter\ElasticSearchTransporter;
 use itsoneiota\eventpublisher\transporter\FirehoseTransporter;
 use itsoneiota\eventpublisher\transporter\KinesisTransporter;
 use itsoneiota\eventpublisher\transporter\MockTransporter;
 use itsoneiota\eventpublisher\transporter\SQSTransporter;
 use itsoneiota\eventpublisher\transporter\TextFileTransporter;
+use itsoneiota\eventpublisher\transporter\RabbitMQTransporter;
 
 class EventPublisherBuilder {
 
@@ -62,6 +64,16 @@ class EventPublisherBuilder {
     }
 
     /**
+     * @param AMQPStreamConnection $AMQPClient
+     * @param $config
+     * @return EventPublisherBuilder
+     */
+    public function withAMQPTransporter(AMQPStreamConnection $AMQPClient, $config) {
+        $this->transporters[] = new RabbitMQTransporter($AMQPClient, $config);
+        return($this);
+    }
+
+    /**
      * @param $config
      * @return EventPublisherBuilder
      */
@@ -107,7 +119,7 @@ class EventPublisherBuilder {
         if(empty($this->transporters)) {
             throw new \Exception("No Transporter Set");
         }
-        $ep = new EventPublisher($this->config);
+        $ep = new EventPublisher();
         foreach($this->transporters as $transporter) {
             $ep->addTransporter($transporter);
         }

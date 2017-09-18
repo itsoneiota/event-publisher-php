@@ -8,7 +8,7 @@ class EventPublisher {
     protected $enabled;
 
     /**
-     * @return Transporter
+     * @return array
      */
     public function getTransporters() {
         return $this->transporters;
@@ -37,7 +37,7 @@ class EventPublisher {
 
     /**
      * @param Event $event
-     * @return bool
+     * @return array|bool
      */
     public function publish(Event $event) {
         if(!$this->enabled) {

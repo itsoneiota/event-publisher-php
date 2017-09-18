@@ -4,6 +4,9 @@ namespace itsoneiota\eventpublisher;
 class Event {
 
     protected $origin="UNDEFINED";
+    protected $domain="all";
+    protected $traceID=null;
+
     protected $type;
     protected $data;
     protected $timestamp;
@@ -27,8 +30,23 @@ class Event {
         $event->header->origin = $this->origin;
         $event->header->type = $this->type;
         $event->header->timeStamp = $this->timestamp;
+        $event->header->traceID = $this->traceID;
         $event->body = $this->data;
         return(json_encode($event));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTraceID() {
+        return $this->traceID;
+    }
+
+    /**
+     * @param mixed $traceID
+     */
+    public function setTraceID($traceID) {
+        $this->traceID = $traceID;
     }
 
     /**
@@ -79,5 +97,22 @@ class Event {
         return($this);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDomain() {
+        return($this->domain);
+    }
+
+    /**
+     * Set domain of event e.g. store name
+     *
+     * Default = "all"
+     *
+     * @param mixed $domain
+     */
+    public function setDomain($domain) {
+        $this->domain = $domain;
+    }
 
 }

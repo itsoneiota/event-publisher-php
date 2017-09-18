@@ -11,7 +11,8 @@
   ],
   "require": {
     "aws/aws-sdk-php": "2.6.16",
-    "darkflib/php-statsd": "dev-master"
+    "darkflib/php-statsd": "dev-master",
+    "php-amqplib/php-amqplib": "^2.6"
   },
   "require-dev" :{
     "phpunit/phpunit": "3.7.*"
