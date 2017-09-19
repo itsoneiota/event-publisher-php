@@ -57,7 +57,7 @@ class RabbitMQTransporter extends AbstractTransporter {
         if(empty($event->getOrigin()) || $event->getType()) {
             return(false);
         }
-        return sprintf("%s.%s.%s", $event->getOrigin(), $event->getDomain(), $event->getType());
+        return sprintf("%s.%s", $event->getDomain(), $event->getType());
     }
 
 }
