@@ -11,6 +11,8 @@ class RabbitMQTransporter extends AbstractTransporter {
     protected $topic = "events";
     protected $exchangeType = "topic";
 
+    const PUBLISH_RETRY = 5;
+
     /**
      * SQSTransporter constructor.
      * @param AMQPStreamConnection $rmqConnection
@@ -41,7 +43,19 @@ class RabbitMQTransporter extends AbstractTransporter {
 
         $msg = new AMQPMessage($event->encode());
 
-        $channel->basic_publish($msg, $this->topic, $routingKey);
+        $tries = 0;
+        while($tries < self::PUBLISH_RETRY) {
+            try {
+                if(!$this->rmqConnection->isConnected()) {
+                    $this->rmqConnection->reconnect();
+                }
+                $channel->basic_publish($msg, $this->topic, $routingKey);
+                break;
+            }
+            catch(\Exception $ex) {}
+            $tries += 1;
+        }
+
         $channel->close();
         $this->rmqConnection->close();
 
