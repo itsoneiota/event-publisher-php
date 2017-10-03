@@ -68,7 +68,7 @@ class RabbitMQTransporter extends AbstractTransporter {
      * @return bool|string
      */
     protected function getRoutingKey(Event $event) {
-        if(empty($event->getOrigin()) || $event->getType()) {
+        if(empty($event->getOrigin()) || empty($event->getType())) {
             return(false);
         }
         return sprintf("%s.%s.%s", $event->getType(), $event->getOrigin(), $event->getDomain());

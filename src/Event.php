@@ -4,7 +4,7 @@ namespace itsoneiota\eventpublisher;
 class Event {
 
     protected $origin="UNDEFINED";
-    protected $domain="all";
+    protected $domain="ALL";
     protected $traceID=null;
 
     protected $type;
@@ -61,7 +61,7 @@ class Event {
      * @return Event
      */
     public function setOrigin($origin) {
-        $this->origin = $origin;
+        $this->origin = strtoupper($origin);
         return($this);
     }
 
@@ -112,7 +112,7 @@ class Event {
      * @param mixed $domain
      */
     public function setDomain($domain) {
-        $this->domain = $domain;
+        $this->domain = strtoupper($domain);
     }
 
 }
